@@ -10,8 +10,9 @@ const app = express()
 
 const scheduleRoutes = require('./routes/schedules')
 const imagesRoutes = require('./routes/images')
-
-app.use(cors());
+app.use(cors({
+   origin: '*'
+}));
 app.use(express.json())
 app.use('/images', express.static('images'));
 app.use('/api/schedules', scheduleRoutes)
