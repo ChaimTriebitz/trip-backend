@@ -17,6 +17,9 @@ app.use(express.json())
 app.use('/images', express.static('images'));
 app.use('/api/schedules', scheduleRoutes)
 app.use('/api/images', imagesRoutes)
+app.get('*', (req, res) => {
+   res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+});
 
 
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true })
