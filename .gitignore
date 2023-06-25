@@ -1,0 +1,21 @@
+node_modules/
+.pnp/
+.pnp.js
+.cache/
+.env
+
+# Build artifacts
+build/
+dist/
+
+# Dependencies
+/package-lock.json
+/yarn.lock
+
+# IDE and editor files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+*.komodoproject
+.DS_Store
