@@ -19,7 +19,7 @@ app.use('/api/schedules', scheduleRoutes)
 app.use('/api/images', imagesRoutes)
 
 
-mongoose.connect(process.env.MONGODB_URI)
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true })
    .then(() =>
       app.listen(process.env.PORT, () => {
          console.log('listening on port', process.env.PORT)
