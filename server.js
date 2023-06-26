@@ -2,11 +2,9 @@ const express = require('express')
 require('dotenv').config()
 const cors = require('cors');
 
-
 const mongoose = require('mongoose')
 
 const app = express()
-
 
 const scheduleRoutes = require('./routes/schedules')
 const imagesRoutes = require('./routes/images')
@@ -18,7 +16,7 @@ app.use('/images', express.static('images'));
 app.use('/api/schedules', scheduleRoutes)
 app.use('/api/images', imagesRoutes)
 app.get('*', (req, res) => {
-   res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+   res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
 });
 
 
