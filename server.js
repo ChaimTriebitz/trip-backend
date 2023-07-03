@@ -1,6 +1,7 @@
 const express = require('express')
 require('dotenv').config()
 const cors = require('cors');
+const path = require('path');
 
 const mongoose = require('mongoose')
 
@@ -15,9 +16,13 @@ app.use(express.json())
 app.use('/images', express.static('images'));
 app.use('/api/schedules', scheduleRoutes)
 app.use('/api/images', imagesRoutes)
-app.get('*', (req, res) => {
-   res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
+app.use(express.static(path.join(__dirname, '../trip-front-end/build')));
+
+// Define a route that serves the index.html file
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../trip-front-end/build/index.html'));
 });
+
 
 
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true })
