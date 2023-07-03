@@ -19,7 +19,6 @@ app.get('*', (req, res) => {
    res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
 });
 
-
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true })
    .then(() =>
       app.listen(process.env.PORT, () => {
