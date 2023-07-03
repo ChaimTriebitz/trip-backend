@@ -1,27 +1,33 @@
 const express = require('express');
 const router = express.Router();
-const path = require('path');
 const multer = require('multer');
-const storage = multer.diskStorage({
-   destination: (req, file, cb) => {
-      cb(null, './images');
-   },
-   filename: (req, file, cb) => {
-      console.log(file);
-      cb(null, Date.now() + '--' + file.originalname);
-   },
+const cloudinary = require('cloudinary').v2;
+cloudinary.config({
+   cloud_name: 'dlyxlzh2y',
+   api_key: '836477378737814',
+   api_secret: 'yDnnJjEvh7iguSuKsoBqz_Ofeho',
 });
-const upload = multer({ storage });
+
+const upload = multer({ dest: 'uploads/' });
+
+
 const Image = require('../modules/images');
 
 router.get('/', async (req, res) => {
-   try {
-      const images = await Image.find({}).sort({ createdAt: -1 });
-      res.json(images);
-   } catch (err) {
-      console.log(err);
-      res.status(500).send('Failed to fetch images.');
-   }
+   const folder = req.query.folder; // Extract the folder name from the query parameter
+   const options = {
+      type: 'upload',
+      prefix: `${folder}/`,
+   };
+
+   cloudinary.api.resources(options, (error, result) => {
+      if (error) {
+         console.error('Error retrieving images:', error);
+         return res.status(500).json({ error: 'Failed to retrieve images' });
+      }
+      const images = result.resources;
+      res.json({ images });
+   });
 });
 
 
@@ -29,16 +35,16 @@ router.get('/', async (req, res) => {
 
 
 router.post('/', upload.single('image'), async (req, res) => {
-   if (!req.file) return res.status(400).send('No file uploaded.');
-
-   const image = new Image({ filename: req.file.filename, path: req.file.path, });
-
    try {
-      await image.save();
-      res.status(200).send('Image uploaded successfully.');
-   } catch (err) {
-      console.log(err);
-      res.status(500).send('Failed to upload image.');
+      const result = await cloudinary.uploader.upload(req.file.path, {
+         folder: 'trip',
+      });
+
+      // Return the Cloudinary image URL in the response
+      res.json({ imageUrl: result.secure_url });
+   } catch (error) {
+      console.error('Error uploading image:', error);
+      return res.status(500).json({ error: 'Image upload failed' });
    }
 });
 router.get('/:id', (req, res) => {
