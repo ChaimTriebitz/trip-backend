@@ -16,8 +16,8 @@ app.use(express.json())
 app.use('/images', express.static('images'));
 app.use('/api/schedules', scheduleRoutes)
 app.use('/api/images', imagesRoutes)
-app.use(express.static(path.join(__dirname, 'build')));
 
+app.use(express.static(path.join(__dirname, 'trip-front-end')));
 // Define a route that serves the index.html file
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
