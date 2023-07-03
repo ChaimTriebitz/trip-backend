@@ -3,9 +3,9 @@ const router = express.Router();
 const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
 cloudinary.config({
-   cloud_name: 'dlyxlzh2y',
-   api_key: '836477378737814',
-   api_secret: 'yDnnJjEvh7iguSuKsoBqz_Ofeho',
+   cloud_name: process.env.CLOUD_NAME,
+   api_key: process.env.API_KEY,
+   api_secret: process.env.API_SECRET,
 });
 
 const upload = multer({ dest: 'uploads/' });
