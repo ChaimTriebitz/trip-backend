@@ -17,10 +17,11 @@ app.use('/images', express.static('images'));
 app.use('/api/schedules', scheduleRoutes)
 app.use('/api/images', imagesRoutes)
 
-app.use(express.static(path.join(__dirname, 'trip-front-end')));
-// Define a route that serves the index.html file
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+app.use(express.static(path.join(__dirname, 'build')));
+
+// Define a catch-all route to serve the React app
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
 
