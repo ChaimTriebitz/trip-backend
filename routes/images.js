@@ -1,38 +1,20 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const cloudinary = require('cloudinary').v2;
-cloudinary.config({
-   cloud_name: process.env.CLOUD_NAME,
-   api_key: process.env.API_KEY,
-   api_secret: process.env.API_SECRET,
-});
-
+const cloudinary = require('../configs/cloudinary');
 const upload = multer({ dest: 'uploads/' });
 
 
-const Image = require('../modules/images');
-
 router.get('/', async (req, res) => {
-   const folder = req.query.folder; // Extract the folder name from the query parameter
-   const options = {
-      type: 'upload',
-      prefix: `${folder}/`,
-   };
-
-   cloudinary.api.resources(options, (error, result) => {
-      if (error) {
-         console.error('Error retrieving images:', error);
-         return res.status(500).json({ error: 'Failed to retrieve images' });
-      }
-      const images = result.resources;
-      res.json({ images });
-   });
+   const { resources } = await cloudinary.search
+      .expression('folder:trip')
+      .sort_by('public_id', 'desc')
+      .max_results(30)
+      .execute();
+   const publicIds = resources.map((file) => file.public_id);
+   console.log(resources);
+   res.send(resources);
 });
-
-
-
-
 
 router.post('/', upload.single('image'), async (req, res) => {
    try {

@@ -1,6 +1,6 @@
 const express = require('express')
 
-const Schedule = require('../modules/schedule')
+const Schedule = require('../models/schedule')
 const router = express.Router()
 
 router.get('/', async (req, res) => {
