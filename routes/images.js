@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
    const { resources } = await cloudinary.search
       .expression('folder:trip')
       .sort_by('public_id', 'desc')
-      .max_results(30)
+      .max_results(1000)
       .execute();
    const publicIds = resources.map((file) => file.public_id);
    console.log(resources);
