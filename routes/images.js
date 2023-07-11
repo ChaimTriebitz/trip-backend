@@ -8,7 +8,7 @@ const upload = multer({ dest: 'uploads/' });
 router.get('/', async (req, res) => {
    const { resources } = await cloudinary.search
       .expression('folder:trip')
-      .sort_by('public_id', 'desc')
+      .sort_by('created_at', 'desc')
       .max_results(1000)
       .execute();
    const publicIds = resources.map((file) => file.public_id);
